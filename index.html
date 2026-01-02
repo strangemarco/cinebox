@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CineBox</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+
+  <!-- LOGO (VOLVER AL INICIO) -->
+  <a href="index.html" class="logo" id="logoHome">
+    <span class="logo-icon">🎬</span>
+    <span class="logo-text">CineBox</span>
+  </a>
+
+  <div class="nav-center">
+
+    <!-- PELÍCULAS -->
+    <div class="dropdown">
+      <button class="nav-filter active">🎬 Películas ▾</button>
+      <div class="dropdown-menu">
+        <button data-movie="popular">🔥 Popular</button>
+        <button data-movie="now_playing">🎟 En cartelera</button>
+        <button data-movie="upcoming">🆕 Próximamente</button>
+        <button data-movie="top_rated">⭐ Mejor valoradas</button>
+      </div>
+    </div>
+
+    <!-- SERIES -->
+    <div class="dropdown">
+      <button class="nav-filter">📺 Series ▾</button>
+      <div class="dropdown-menu">
+        <button data-tv="popular">🔥 Popular</button>
+        <button data-tv="airing_today">📡 Se emiten hoy</button>
+        <button data-tv="on_the_air">📺 En televisión</button>
+        <button data-tv="top_rated">⭐ Mejor valoradas</button>
+      </div>
+    </div>
+
+    <!-- ANIME -->
+    <button class="nav-filter" data-filter="anime">🎌 Anime</button>
+
+  </div>
+
+   <!-- DISCORD -->
+  <a
+    href="https://discord.gg/9daqaN43"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="discord-btn"
+    title="Únete al Discord de CineBox"
+  >
+    <svg
+      class="discord-icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 245 240"
+      aria-hidden="true"
+    >
+      <path
+        fill="currentColor"
+        d="M104.4 104.7c-5.7 0-10.2 5-10.2 11.1 0 6.1 4.6 11.1 10.2 11.1 5.7 0 10.2-5 10.2-11.1.1-6.1-4.5-11.1-10.2-11.1zm36.2 0c-5.7 0-10.2 5-10.2 11.1 0 6.1 4.6 11.1 10.2 11.1 5.7 0 10.2-5 10.2-11.1 0-6.1-4.5-11.1-10.2-11.1z"
+      />
+      <path
+        fill="currentColor"
+        d="M189.5 20h-134C24.5 20 20 24.5 20 30.5v135c0 6 4.5 10.5 10.5 10.5h113.4l-5.3-18.5 12.8 11.9 12.1 11.2 21.6 19.4V30.5c0-6-4.5-10.5-10.6-10.5zM162 150s-5.3-6.3-9.7-11.9c19.3-5.4 26.6-17.4 26.6-17.4-6 4-11.7 6.8-16.8 8.8-7.3 3.1-14.3 5.1-21.2 6.3-14.1 2.7-27.1 2-38.4-.1-8.5-1.6-15.8-4-21.8-6.3-3.4-1.3-7.2-2.9-11-5-0.5-0.3-1-0.5-1.4-0.8-0.3-0.2-0.5-0.3-0.7-0.5 0 0 7.1 11.7 25.9 17.3-4.4 5.6-9.9 12.3-9.9 12.3-32.7-1-45.1-22.5-45.1-22.5 0-47.7 21.3-86.4 21.3-86.4 21.3-16 41.6-15.5 41.6-15.5l1.5 1.8c-26.7 7.7-38.9 19.4-38.9 19.4s3.3-1.8 8.8-4.3c15.9-7 28.5-8.9 33.7-9.3 0.9-0.1 1.7-0.2 2.6-0.2 9.3-1.2 19.8-1.5 30.6-0.3 14.3 1.6 29.6 5.8 45 15.3 0 0-11.6-11-36.7-18.7l2.1-2.4s20.3-0.5 41.6 15.5c0 0 21.3 38.7 21.3 86.4 0 0-12.5 21.5-45.2 22.5z"
+      />
+    </svg>
+
+    <span>Discord</span>
+  </a>
+
+
+  <div class="nav-right">
+    <button id="themeToggle" class="theme-btn" title="Cambiar tema">🌙</button>
+  </div>
+
+</nav>
+
+
+<!-- ================= HEADER / BUSCADOR ================= -->
+<header class="header">
+  <p>Explora y busca tus películas, series y animes favoritos</p>
+
+  <input
+    type="text"
+    id="search"
+    placeholder="Buscar película, serie o anime..."
+  />
+</header>
+
+<!-- ================= HOME / CARRUSELES ================= -->
+<section class="home-section">
+
+  <!-- 🔥 TENDENCIAS (TODOS) -->
+  <h2 data-section="all">🔥 En tendencia</h2>
+  <div class="carousel-wrapper" data-section="all">
+    <button class="carousel-btn prev" data-target="trendings">◀</button>
+    <div class="carousel" id="trendings"></div>
+    <button class="carousel-btn next" data-target="trendings">▶</button>
+  </div>
+
+  <!-- ⭐ PELÍCULAS -->
+  <h2 data-section="movie">⭐ Películas mejor valoradas</h2>
+  <div class="carousel-wrapper" data-section="movie">
+    <button class="carousel-btn prev" data-target="topRated">◀</button>
+    <div class="carousel" id="topRated"></div>
+    <button class="carousel-btn next" data-target="topRated">▶</button>
+  </div>
+
+  <h2 data-section="movie">🆕 Estrenos</h2>
+  <div class="carousel-wrapper" data-section="movie">
+    <button class="carousel-btn prev" data-target="upcoming">◀</button>
+    <div class="carousel" id="upcoming"></div>
+    <button class="carousel-btn next" data-target="upcoming">▶</button>
+  </div>
+
+  <!-- 📺 SERIES -->
+  <h2 data-section="series">📺 Series en tendencia</h2>
+  <div class="carousel-wrapper" data-section="series">
+    <button class="carousel-btn prev" data-target="seriesTrending">◀</button>
+    <div class="carousel" id="seriesTrending"></div>
+    <button class="carousel-btn next" data-target="seriesTrending">▶</button>
+  </div>
+
+  <h2 data-section="series">⭐ Series mejor valoradas</h2>
+  <div class="carousel-wrapper" data-section="series">
+    <button class="carousel-btn prev" data-target="seriesTopRated">◀</button>
+    <div class="carousel" id="seriesTopRated"></div>
+    <button class="carousel-btn next" data-target="seriesTopRated">▶</button>
+  </div>
+
+  <h2 data-section="series">🔥 Series populares</h2>
+  <div class="carousel-wrapper" data-section="series">
+    <button class="carousel-btn prev" data-target="seriesPopular">◀</button>
+    <div class="carousel" id="seriesPopular"></div>
+    <button class="carousel-btn next" data-target="seriesPopular">▶</button>
+  </div>
+
+  <!-- 🎌 ANIME -->
+  <h2 data-section="anime">🎌 Anime popular</h2>
+  <div class="carousel-wrapper" data-section="anime">
+    <button class="carousel-btn prev" data-target="animePopular">◀</button>
+    <div class="carousel" id="animePopular"></div>
+    <button class="carousel-btn next" data-target="animePopular">▶</button>
+  </div>
+
+  <!-- 🎬 GÉNEROS -->
+  <h2 data-section="movie">🔥 Acción</h2>
+  <div class="carousel-wrapper" data-section="movie">
+    <button class="carousel-btn prev" data-target="action">◀</button>
+    <div class="carousel" id="action"></div>
+    <button class="carousel-btn next" data-target="action">▶</button>
+  </div>
+
+  <h2 data-section="movie">😱 Terror</h2>
+  <div class="carousel-wrapper" data-section="movie">
+    <button class="carousel-btn prev" data-target="horror">◀</button>
+    <div class="carousel" id="horror"></div>
+    <button class="carousel-btn next" data-target="horror">▶</button>
+  </div>
+
+  <h2 data-section="movie">🎭 Drama</h2>
+  <div class="carousel-wrapper" data-section="movie">
+    <button class="carousel-btn prev" data-target="drama">◀</button>
+    <div class="carousel" id="drama"></div>
+    <button class="carousel-btn next" data-target="drama">▶</button>
+  </div>
+
+</section>
+
+<!-- ================= GRID BÚSQUEDA ================= -->
+<main id="movies" class="movies-container"></main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <p>
+    CineBox © 2026 · Proyecto personal de portafolio.
+  </p>
+  <p class="footer-sub">
+    Aplicación web desarrollada para la exploración de películas,
+    series y anime. Implementa consumo de API REST, manejo de estado,
+    navegación dinámica y diseño responsive.
+  </p>
+  <p class="footer-tech">
+    Tecnologías: HTML · CSS · JavaScript · TMDB API
+  </p>
+</footer>
+
+<!-- ================= MODAL ================= -->
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <button id="closeModal" class="close-btn">✕</button>
+
+    <img id="modalImage" alt="">
+    <h2 id="modalTitle"></h2>
+    <span id="modalYear"></span>
+
+    <div id="modalRating"></div>
+    <div id="modalMeta"></div>
+
+    <p id="modalDescription"></p>
+
+    <button id="trailerBtn" class="trailer-btn hidden">▶ Ver tráiler</button>
+
+    <div id="trailerContainer" class="trailer-container hidden">
+      <iframe id="trailerIframe" allowfullscreen allow="autoplay"></iframe>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>

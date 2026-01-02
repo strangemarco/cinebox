@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CineBox | Detalle</title>
+
+  <!-- CSS principal (el mismo de la home) -->
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- ================= NAVBAR / HEADER ================= -->
+<header class="header detail-header navbar">
+  <div class="detail-header-top">
+
+    <a href="index.html" class="logo" id="logoHome">
+      <span class="logo-icon">🎬</span>
+      <span class="logo-text">CineBox</span>
+    </a>
+
+    <button id="themeToggle" class="theme-btn" title="Cambiar tema">🌙</button>
+  </div>
+
+  <p class="detail-subtitle">Detalle de la película</p>
+
+  <a href="index.html" class="back-link">← Volver</a>
+</header>
+
+
+<!-- ================= CONTENIDO ================= -->
+<main class="detail-container">
+  <div class="detail-poster">
+    <img id="poster" alt="Poster">
+  </div>
+
+  <div class="detail-info">
+    <h2 id="title" class="detail-title"></h2>
+
+    <div id="rating" class="detail-rating"></div>
+
+    <div class="detail-meta" id="meta"></div>
+
+    <p id="overview" class="detail-description"></p>
+
+    <button id="trailerBtn" class="trailer-btn hidden">▶ Ver tráiler</button>
+
+    <div id="trailerContainer" class="trailer-container hidden">
+      <iframe
+        id="trailerIframe"
+        allowfullscreen
+        allow="autoplay"
+      ></iframe>
+    </div>
+  </div>
+</main>
+
+<!-- ================= SCRIPT ================= -->
+<script type="module" src="detail.js"></script>
+
+<!-- ================= TEMA (MISMA LÓGICA QUE HOME) ================= -->
+<script>
+  const themeBtn = document.getElementById("themeToggle");
+
+  themeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+    themeBtn.textContent =
+      document.body.classList.contains("light") ? "🌞" : "🌙";
+  });
+</script>
+
+
+
+
+<script>
+  document.getElementById("logoHome")?.addEventListener("click", () => {
+    sessionStorage.removeItem("cinebox_state");
+  });
+</script>
+
+
+
+
+</body>
+</html>
