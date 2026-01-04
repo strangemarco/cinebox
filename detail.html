@@ -55,20 +55,26 @@
   </div>
 </main>
 
-<!-- ================= SCRIPT ================= -->
-<script type="module" src="detail.js"></script>
+<script type="module">
+  import { saveTheme, loadTheme } from "./storage.js";
 
-<!-- ================= TEMA (MISMA LÓGICA QUE HOME) ================= -->
-<script>
   const themeBtn = document.getElementById("themeToggle");
+
+  const savedTheme = loadTheme();
+  if (savedTheme === "light") {
+    document.body.classList.add("light");
+    themeBtn.textContent = "🌞";
+  }
 
   themeBtn.addEventListener("click", () => {
     document.body.classList.toggle("light");
-    themeBtn.textContent =
-      document.body.classList.contains("light") ? "🌞" : "🌙";
+
+    const isLight = document.body.classList.contains("light");
+    saveTheme(isLight ? "light" : "dark");
+
+    themeBtn.textContent = isLight ? "🌞" : "🌙";
   });
 </script>
-
 
 
 
@@ -79,6 +85,8 @@
 </script>
 
 
+<script type="module" src="theme.js"></script>
+<script type="module" src="detail.js"></script>
 
 
 </body>

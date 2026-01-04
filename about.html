@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acerca de | CineBox</title>
+
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+
+  <a href="index.html" class="logo">
+    <span class="logo-icon">🎬</span>
+    <span class="logo-text">CineBox</span>
+  </a>
+
+  <div class="nav-right">
+    <button id="themeToggle" class="theme-btn">🌙</button>
+  </div>
+
+</nav>
+
+<!-- ================= ABOUT ================= -->
+<section class="about-section">
+
+  <h1>🎬 Acerca de CineBox</h1>
+
+  <p class="about-description">
+    <strong>CineBox</strong> es una aplicación web moderna desarrollada como
+    proyecto de portafolio, enfocada en la exploración de
+    <strong>películas, series y anime</strong>.
+    Consume la API de <strong>The Movie Database (TMDB)</strong> y ofrece
+    una experiencia visual fluida, responsive y orientada al usuario.
+  </p>
+
+  <div class="about-grid">
+
+    <div class="about-card fade-slide">
+      <h3>🚀 Funcionalidades</h3>
+      <ul>
+        <li>🔍 Búsqueda dinámica</li>
+        <li>🎬 Películas, Series y Anime</li>
+        <li>📂 Filtros por categoría</li>
+        <li>🎠 Carruseles tipo streaming</li>
+        <li>🌙☀️ Modo oscuro / claro</li>
+        <li>📱 Diseño responsive</li>
+        <li>🎥 Vista de detalle con tráiler</li>
+      </ul>
+    </div>
+
+    <div class="about-card fade-slide">
+      <h3>🧠 Tecnologías</h3>
+      <ul>
+        <li>HTML5</li>
+        <li>CSS3</li>
+        <li>JavaScript (ES Modules)</li>
+        <li>TMDB API</li>
+        <li>GitHub Pages</li>
+      </ul>
+    </div>
+
+    <div class="about-card fade-slide">
+      <h3>🎯 Objetivo</h3>
+      <p>
+        Proyecto desarrollado con fines educativos y de portafolio,
+        aplicando consumo de APIs REST, manejo de estado en frontend,
+        UX/UI y buenas prácticas de desarrollo web.
+      </p>
+    </div>
+
+    <div class="about-card fade-slide">
+      <h3>👨‍💻 Autor</h3>
+      <p>
+        Desarrollado por <strong>Marco Justiniano</strong><br>
+        Proyecto personal – 2026
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <p>CineBox © 2026 · Proyecto personal de portafolio.</p>
+</footer>
+
+
+
+<!-- ================= FADE + SLIDE ================= -->
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document
+    .querySelectorAll(".fade-slide")
+    .forEach(el => observer.observe(el));
+</script>
+
+<script type="module" src="theme.js"></script>
+
+
+
+
+
+</body>
+</html>

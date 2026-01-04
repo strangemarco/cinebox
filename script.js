@@ -1,4 +1,47 @@
+
 import { TMDB_API_KEY, TMDB_BASE, IMG_BASE } from "./config.js";
+import { saveTheme, loadTheme } from "./storage.js";
+import { saveState, loadState } from "./state.js";
+
+function setList(type, endpoint) {
+  saveState({
+    filter: activeSearchFilter,
+    scrollY: window.scrollY,
+    search: searchInput?.value || "",
+    view: "list",
+    listType: type,        // movie | tv | anime
+    listEndpoint: endpoint // popular | upcoming | on_the_air
+  });
+}
+
+
+/* =====================
+   THEME (LOCAL STORAGE)
+===================== */
+const themeBtn = document.getElementById("themeToggle");
+
+// aplicar tema guardado al cargar
+const savedTheme = loadTheme();
+
+if (savedTheme === "light") {
+  document.body.classList.add("light");
+  if (themeBtn) themeBtn.textContent = "🌞";
+} else {
+  if (themeBtn) themeBtn.textContent = "🌙";
+}
+
+// toggle de tema
+themeBtn?.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+
+  const isLight = document.body.classList.contains("light");
+  saveTheme(isLight ? "light" : "dark");
+
+  themeBtn.textContent = isLight ? "🌞" : "🌙";
+});
+
+
+
 
 /* =====================
    STATE
@@ -6,6 +49,17 @@ import { TMDB_API_KEY, TMDB_BASE, IMG_BASE } from "./config.js";
 let isSearching = false;
 let lastSearchResults = [];
 let activeSearchFilter = "all";
+
+function setView(view) {
+  saveState({
+    filter: activeSearchFilter,
+    scrollY: window.scrollY,
+    search: searchInput?.value || "",
+    view
+  });
+}
+
+
 
 /* =====================
    HELPERS
@@ -19,6 +73,9 @@ function escapeHtml(str = "") {
     "'": "&#039;"
   }[m]));
 }
+
+
+
 
 async function tmdbFetch(url) {
   const res = await fetch(url);
@@ -73,8 +130,15 @@ function renderCarousel(containerId, list) {
     `;
 
     card.onclick = () => {
-      window.location.href = `detail.html?id=${item.id}&type=${item.type}`;
-    };
+  saveState({
+    filter: activeSearchFilter,
+    scrollY: window.scrollY,
+    search: searchInput?.value || ""
+  });
+
+  window.location.href = `detail.html?id=${item.id}&type=${item.type}`;
+};
+
 
     container.appendChild(card);
   });
@@ -149,16 +213,20 @@ searchInput.addEventListener("input", () => {
   const query = searchInput.value.trim();
   clearTimeout(searchTimeout);
 
-  if (!query) {
-    isSearching = false;
-    moviesGrid.innerHTML = "";
-    moviesGrid.style.display = "none";
-    homeSection.style.display = "block";
-    filterHomeSections(activeSearchFilter);
-    return;
-  }
+ if (!query) {
+  isSearching = false;
+  setView("home");
+  moviesGrid.innerHTML = "";
+  moviesGrid.style.display = "none";
+  homeSection.style.display = "block";
+  filterHomeSections(activeSearchFilter);
+  return;
+}
+
 
   isSearching = true;
+  setView("search");
+
 
   searchTimeout = setTimeout(() => {
     searchTMDB(query);
@@ -214,9 +282,16 @@ function renderSearchResults(list) {
       </div>
     `;
 
-    card.onclick = () => {
-      window.location.href = `detail.html?id=${item.id}&type=${item.type}`;
-    };
+   card.onclick = () => {
+  saveState({
+    filter: activeSearchFilter,
+    scrollY: window.scrollY,
+    search: searchInput?.value || ""
+  });
+
+  window.location.href = `detail.html?id=${item.id}&type=${item.type}`;
+};
+
 
     moviesGrid.appendChild(card);
   });
@@ -249,37 +324,58 @@ function applySearchFilter() {
 ===================== */
 document.querySelectorAll(".nav-filter").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".nav-filter")
-      .forEach(b => b.classList.remove("active"));
 
+    // Quitar activo
+    document.querySelectorAll(".nav-filter").forEach(b =>
+      b.classList.remove("active")
+    );
     btn.classList.add("active");
-    activeSearchFilter = btn.dataset.filter;
 
-    if (isSearching) {
-      applySearchFilter();      // 🔍 filtra resultados de búsqueda
-    } else {
-      filterHomeSections(activeSearchFilter); // 🏠 filtra carruseles
+    const filter = btn.dataset.filter || "all";
+    activeSearchFilter = filter;
+
+    // Mostrar secciones
+    isSearching ? applySearchFilter() : filterHomeSections(filter);
+
+    // Scroll automático según categoría
+    let targetId = null;
+
+    if (filter === "movie") targetId = "movies-section";
+    if (filter === "series") targetId = "series-section";
+    if (filter === "anime") targetId = "anime-section";
+
+    if (targetId) {
+      const section = document.getElementById(targetId);
+      if (section) {
+        section.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
     }
+
+    // ✅ GUARDAR STATE AL CAMBIAR FILTRO
+    saveState({
+      filter: activeSearchFilter,
+      scrollY: window.scrollY,
+      search: searchInput?.value || ""
+    });
+  });
+});
+
+/* =====================
+   SAVE STATE ON SCROLL
+===================== */
+window.addEventListener("scroll", () => {
+  saveState({
+    filter: activeSearchFilter,
+    scrollY: window.scrollY,
+    search: searchInput?.value || ""
   });
 });
 
 
-/* =====================
-   THEME TOGGLE
-===================== */
-const themeBtn = document.getElementById("themeToggle");
 
-themeBtn?.addEventListener("click", () => {
-  document.body.classList.toggle("light");
-  themeBtn.textContent =
-    document.body.classList.contains("light") ? "🌞" : "🌙";
-});
-
-/* =====================
-   INIT
-===================== */
-loadHome();
-filterHomeSections("all");
 
 /* =====================
    DROPDOWN TMDB LOADERS
@@ -288,32 +384,55 @@ filterHomeSections("all");
 // PELÍCULAS
 document.querySelectorAll("[data-movie]").forEach(btn => {
   btn.addEventListener("click", async () => {
-    const type = btn.dataset.movie;
+    const endpoint = btn.dataset.movie;
+
+    setList("movie", endpoint);
 
     homeSection.style.display = "none";
     moviesGrid.style.display = "grid";
     moviesGrid.innerHTML = "🎬 Cargando películas...";
 
-    const list = await fetchList(`/movie/${type}`, "movie");
+    const list = await fetchList(`/movie/${endpoint}`, "movie");
     renderSearchResults(list);
   });
 });
 
+
 // SERIES
 document.querySelectorAll("[data-tv]").forEach(btn => {
   btn.addEventListener("click", async () => {
-    const type = btn.dataset.tv;
+    const endpoint = btn.dataset.tv;
+
+    setList("tv", endpoint);
 
     homeSection.style.display = "none";
     moviesGrid.style.display = "grid";
     moviesGrid.innerHTML = "📺 Cargando series...";
 
-    const list = await fetchList(`/tv/${type}`, "tv");
+    const list = await fetchList(`/tv/${endpoint}`, "tv");
     renderSearchResults(list);
   });
 });
 
+/* =====================
+   ANIME DROPDOWN
+===================== */
+document.querySelectorAll("[data-anime]").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    setList("anime", "popular");
 
+    homeSection.style.display = "none";
+    moviesGrid.style.display = "grid";
+    moviesGrid.innerHTML = "🎌 Cargando anime...";
+
+    const list = await fetchList(
+      `/discover/tv?with_keywords=210024&sort_by=popularity.desc`,
+      "tv"
+    );
+
+    renderSearchResults(list);
+  });
+});
 
 
 
@@ -359,7 +478,7 @@ document.addEventListener("keydown", e => {
 });
 
 document.getElementById("logoHome")?.addEventListener("click", () => {
-  sessionStorage.removeItem("cinebox_state");
+  localStorage.removeItem("cinebox_state");
 });
 
 const navbar = document.querySelector(".navbar");
@@ -370,4 +489,95 @@ window.addEventListener("scroll", () => {
   } else {
     navbar.classList.remove("scrolled");
   }
+});
+
+
+
+
+/* =====================
+   INIT + RESTORE STATE (FIXED)
+===================== */
+(async () => {
+  const savedState = loadState();
+
+  // 1. Restaurar filtro lógico
+  if (savedState?.filter) {
+    activeSearchFilter = savedState.filter;
+  }
+
+  // 2. Cargar Home y ESPERAR
+  await loadHome();
+
+  // 3. Restaurar botón activo del navbar
+  document.querySelectorAll(".nav-filter").forEach(btn => {
+    btn.classList.toggle(
+      "active",
+      btn.dataset.filter === activeSearchFilter
+    );
+  });
+
+  // 4. Aplicar filtro visual
+  filterHomeSections(activeSearchFilter);
+
+  // 5. Restaurar vista
+  if (savedState?.view === "search" && savedState.search) {
+    searchInput.value = savedState.search;
+    isSearching = true;
+    searchTMDB(savedState.search);
+  }
+if (savedState?.view === "list" && savedState.listType) {
+  homeSection.style.display = "none";
+  moviesGrid.style.display = "grid";
+  moviesGrid.innerHTML = "⏳ Restaurando contenido...";
+
+  let endpoint = "";
+
+  if (savedState.listType === "movie") {
+    endpoint = `/movie/${savedState.listEndpoint}`;
+  }
+
+  if (savedState.listType === "tv") {
+    endpoint = `/tv/${savedState.listEndpoint}`;
+  }
+
+  if (savedState.listType === "anime") {
+    endpoint = `/discover/tv?with_keywords=210024&sort_by=popularity.desc`;
+  }
+
+  fetchList(endpoint, savedState.listType === "movie" ? "movie" : "tv")
+    .then(renderSearchResults);
+}
+
+  // 6. Restaurar scroll
+  if (savedState?.scrollY) {
+    setTimeout(() => {
+      window.scrollTo({
+        top: savedState.scrollY,
+        behavior: "auto"
+      });
+    }, 500);
+  }
+})();
+
+
+/* =====================
+   MOBILE MENU
+===================== */
+const menuToggle = document.getElementById("menuToggle");
+const mobileMenu = document.getElementById("mobileMenu");
+const closeMenu = document.getElementById("closeMenu");
+
+menuToggle?.addEventListener("click", () => {
+  mobileMenu.classList.add("open");
+});
+
+closeMenu?.addEventListener("click", () => {
+  mobileMenu.classList.remove("open");
+});
+
+// Cerrar al hacer click en una opción
+mobileMenu?.querySelectorAll("button, a").forEach(el => {
+  el.addEventListener("click", () => {
+    mobileMenu.classList.remove("open");
+  });
 });

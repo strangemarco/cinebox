@@ -1,4 +1,26 @@
 import { TMDB_API_KEY, TMDB_BASE, IMG_BASE } from "./config.js";
+import { loadTheme, saveTheme } from "./storage.js";
+
+/* =====================
+   THEME (GLOBAL)
+===================== */
+const themeBtn = document.getElementById("themeToggle");
+
+const savedTheme = loadTheme();
+if (savedTheme === "light") {
+  document.body.classList.add("light");
+  if (themeBtn) themeBtn.textContent = "🌞";
+}
+
+themeBtn?.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+
+  const isLight = document.body.classList.contains("light");
+  saveTheme(isLight ? "light" : "dark");
+
+  themeBtn.textContent = isLight ? "🌞" : "🌙";
+});
+
 
 /* =====================
    HELPERS
