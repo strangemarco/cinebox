@@ -13,65 +13,70 @@
 <!-- ================= NAVBAR ================= -->
 <nav class="navbar">
 
+  <!-- MENU TOGGLE (SOLO MOBILE) -->
+  <button
+    class="menu-toggle"
+    id="menuToggle"
+    aria-label="Menú"
+    type="button"
+  >
+    ☰
+  </button>
 
-  <!-- LOGO (VOLVER AL INICIO) -->
+  <!-- LOGO -->
   <a href="index.html" class="logo" id="logoHome">
     <span class="logo-icon">🎬</span>
     <span class="logo-text">CineBox</span>
   </a>
 
-  <!-- CENTRO -->
+  <!-- NAV CENTER (DESKTOP) -->
   <div class="nav-center">
 
     <!-- PELÍCULAS -->
     <div class="dropdown">
-      <button class="nav-filter active" data-filter="movie">
+      <button class="nav-filter active" data-filter="movie" type="button">
         🎬 Películas ▾
       </button>
       <div class="dropdown-menu">
-        <button data-movie="popular">🔥 Popular</button>
-        <button data-movie="now_playing">🎟 En cartelera</button>
-        <button data-movie="upcoming">🆕 Próximamente</button>
-        <button data-movie="top_rated">⭐ Mejor valoradas</button>
+        <button data-movie="popular" type="button">🔥 Popular</button>
+        <button data-movie="now_playing" type="button">🎟 En cartelera</button>
+        <button data-movie="upcoming" type="button">🆕 Próximamente</button>
+        <button data-movie="top_rated" type="button">⭐ Mejor valoradas</button>
       </div>
     </div>
 
     <!-- SERIES -->
     <div class="dropdown">
-      <button class="nav-filter" data-filter="series">
+      <button class="nav-filter" data-filter="series" type="button">
         📺 Series ▾
       </button>
       <div class="dropdown-menu">
-        <button data-tv="popular">🔥 Popular</button>
-        <button data-tv="airing_today">📡 Se emiten hoy</button>
-        <button data-tv="on_the_air">📺 En televisión</button>
-        <button data-tv="top_rated">⭐ Mejor valoradas</button>
+        <button data-tv="popular" type="button">🔥 Popular</button>
+        <button data-tv="airing_today" type="button">📡 Se emiten hoy</button>
+        <button data-tv="on_the_air" type="button">📺 En televisión</button>
+        <button data-tv="top_rated" type="button">⭐ Mejor valoradas</button>
       </div>
     </div>
 
     <!-- ANIME -->
- 
     <div class="dropdown">
-      <button class="nav-filter" data-filter="anime">
+      <button class="nav-filter" data-filter="anime" type="button">
         🎌 Anime ▾
       </button>
-
       <div class="dropdown-menu">
-        <button data-anime="popular">🔥 Popular</button>
-        <button data-anime="airing_today">📺 Se emiten hoy</button>
-        <button data-anime="on_the_air">📡 En televisión</button>
-        <button data-anime="top_rated">⭐ Mejor valoradas</button>
+        <button data-anime="popular" type="button">🔥 Popular</button>
+        <button data-anime="airing_today" type="button">📺 Se emiten hoy</button>
+        <button data-anime="on_the_air" type="button">📡 En televisión</button>
+        <button data-anime="top_rated" type="button">⭐ Mejor valoradas</button>
       </div>
     </div>
+
   </div>
 
-
-    <!-- ACERCA DE -->
-    <a href="about.html" class="nav-filter about-btn">
-     Acerca de
-    </a>
-
-
+  <!-- ACERCA DE (DESKTOP) -->
+  <a href="about.html" class="nav-filter about-btn">
+    Acerca de
+  </a>
 
   <!-- DISCORD -->
   <a
@@ -89,31 +94,19 @@
     <span>Discord</span>
   </a>
 
-  <!-- DERECHA -->
+  <!-- NAV RIGHT -->
   <div class="nav-right">
-
-    
-    <!-- TEMA -->
-    <button id="themeToggle" class="theme-btn" title="Cambiar tema">
+    <button
+      id="themeToggle"
+      class="theme-btn"
+      title="Cambiar tema"
+      type="button"
+    >
       🌙
     </button>
-
   </div>
 
-
-
-
-
-  <button class="menu-toggle" id="menuToggle" aria-label="Menú">
-  ☰
-  </button>
-
-
-
 </nav>
-
-
-
 
 <!-- ================= HEADER ================= -->
 <header class="header">
@@ -125,11 +118,7 @@
   />
 </header>
 
-
-
-
-
-<!-- ================= HOME / CARRUSELES ================= -->
+<!-- ================= HOME ================= -->
 <section class="home-section">
 
   <h2 data-section="all">🔥 En tendencia</h2>
@@ -172,7 +161,6 @@
 <!-- ================= GRID BÚSQUEDA ================= -->
 <main id="movies" class="movies-container"></main>
 
-
 <!-- ================= FOOTER ================= -->
 <footer class="footer">
   <p>CineBox © 2026 · Proyecto personal de portafolio.</p>
@@ -188,19 +176,16 @@
 <!-- ================= MODAL ================= -->
 <div id="modal" class="modal hidden">
   <div class="modal-content">
-    <button id="closeModal" class="close-btn">✕</button>
-
+    <button id="closeModal" class="close-btn" type="button">✕</button>
     <img id="modalImage" alt="">
     <h2 id="modalTitle"></h2>
     <span id="modalYear"></span>
-
     <div id="modalRating"></div>
     <div id="modalMeta"></div>
-
     <p id="modalDescription"></p>
-
-    <button id="trailerBtn" class="trailer-btn hidden">▶ Ver tráiler</button>
-
+    <button id="trailerBtn" class="trailer-btn hidden" type="button">
+      ▶ Ver tráiler
+    </button>
     <div id="trailerContainer" class="trailer-container hidden">
       <iframe id="trailerIframe" allowfullscreen allow="autoplay"></iframe>
     </div>
@@ -209,32 +194,20 @@
 
 <script type="module" src="script.js"></script>
 
-
-
-
 <!-- ================= MOBILE MENU ================= -->
 <div class="mobile-menu" id="mobileMenu">
-
   <div class="mobile-menu-header">
     <span>🎬 CineBox</span>
-    <button id="closeMenu">✕</button>
+    <button id="closeMenu" type="button">✕</button>
   </div>
 
   <nav class="mobile-nav">
-    <button class="nav-filter" data-filter="movie">🎬 Películas</button>
-    <button class="nav-filter" data-filter="series">📺 Series</button>
-    <button class="nav-filter" data-filter="anime">🎌 Anime</button>
-
+    <button class="mobile-link" data-filter="movie" type="button">🎬 Películas</button>
+    <button class="mobile-link" data-filter="series" type="button">📺 Series</button>
+    <button class="mobile-link" data-filter="anime" type="button">🎌 Anime</button>
     <a href="about.html" class="mobile-link">ℹ️ Acerca de</a>
   </nav>
-
 </div>
-
-
-
-
-
-
 
 </body>
 </html>
