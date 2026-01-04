@@ -574,3 +574,60 @@ menuToggle?.addEventListener("click", () => {
 closeMenu?.addEventListener("click", () => {
   mobileMenu.classList.remove("open");
 });
+
+
+
+/* =====================
+   MOBILE FILTER FIX
+===================== */
+
+document.querySelectorAll(".mobile-link[data-filter]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const filter = btn.dataset.filter;
+
+    // actualizar filtro global
+    activeSearchFilter = filter;
+
+    // cerrar menú móvil
+    mobileMenu.classList.remove("open");
+
+    // limpiar búsqueda
+    if (searchInput) {
+      searchInput.value = "";
+    }
+
+    isSearching = false;
+
+    // mostrar home
+    homeSection.style.display = "block";
+    moviesGrid.style.display = "none";
+
+    // aplicar filtro visual
+    filterHomeSections(filter);
+
+    // actualizar botones desktop (por coherencia)
+    document.querySelectorAll(".nav-filter").forEach(b => {
+      b.classList.toggle("active", b.dataset.filter === filter);
+    });
+
+    // scroll suave a sección correcta
+    let targetId = null;
+    if (filter === "movie") targetId = "movies-section";
+    if (filter === "series") targetId = "series-section";
+    if (filter === "anime") targetId = "anime-section";
+
+    if (targetId) {
+      document.getElementById(targetId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    // guardar estado
+    saveState({
+      filter,
+      scrollY: 0,
+      search: ""
+    });
+  });
+});
