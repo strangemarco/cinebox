@@ -574,10 +574,3 @@ menuToggle?.addEventListener("click", () => {
 closeMenu?.addEventListener("click", () => {
   mobileMenu.classList.remove("open");
 });
-
-// Cerrar al hacer click en una opción
-mobileMenu?.querySelectorAll("button, a").forEach(el => {
-  el.addEventListener("click", () => {
-    mobileMenu.classList.remove("open");
-  });
-});
