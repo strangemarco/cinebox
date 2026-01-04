@@ -1835,3 +1835,12 @@ body.light .about-card li::before {
   }
 }
 
+
+/* =========================
+   FIX: ocultar menú móvil en desktop
+========================= */
+@media (min-width: 769px) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
